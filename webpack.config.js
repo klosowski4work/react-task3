@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = env => {
     const isProduction = false;
@@ -15,7 +15,7 @@ module.exports = env => {
             extensions: [".js", ".jsx"]
         },
 
-        entry: ["./index.jsx", "./index.scss"],
+        entry: ["./index.jsx"],
 
         output: {
             filename: "bundle.js",
@@ -31,6 +31,7 @@ module.exports = env => {
                 },
                 {
                     test: /\.(jpg)$/,
+                    exclude: /node_modules/,
                     use: [
                         {
                             loader: 'file-loader',
@@ -41,22 +42,25 @@ module.exports = env => {
                     ]
                 },
                 {
-                    test: /\.(sass|scss)$/,
-                    loader: ExtractTextPlugin.extract(['sass-loader'])
+                    test: /\.scss/,
+                    exclude: /node_modules/,
+                    use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
                 },
             ]
         },
 
         plugins: [
-            new ExtractTextPlugin({ // define where to save the file
-                filename: 'dist/[name].bundle.css',
-            }),
             new HtmlWebpackPlugin({
-                title: "netflixroulette",
+                title: 'React epam course',
                 hash: true,
-                template: path.resolve(__dirname, "./index.html"),
-                links: [{ rel: 'stylesheet', type: 'text/css', href: '/index.css' }],
+                template: './index.html'
             }),
+            new MiniCssExtractPlugin({
+                filename: '[name].css',
+                chunkFilename: '[id].css'
+            }),
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.NamedModulesPlugin(),
         ],
 
         watch: true
