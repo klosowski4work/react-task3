@@ -16,16 +16,14 @@ export class App extends React.Component {
     };
 
     render() {
-        return <div className="app">
-
-            <Header />
-            <div className="app__body">
-                <ErrorBoundary onError={() => this.myErrorHandler()}>
+        return <ErrorBoundary onError={() => this.myErrorHandler()}>
+            <div className="app">
+                <Header />
+                <div className="app__body">
                     <Results />
-                </ErrorBoundary>
+                </div>
+                <Footer />
             </div>
-            <Footer />
-
-        </div>
+        </ErrorBoundary>
     }
 };
