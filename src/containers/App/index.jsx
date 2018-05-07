@@ -26,4 +26,4 @@ export class App extends React.Component {
             </div>
         </ErrorBoundary>
     }
-};
+}; 
